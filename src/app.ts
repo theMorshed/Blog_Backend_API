@@ -4,8 +4,8 @@ import cors from 'cors';
 // import { roomRoutes } from './modules/room/room.routes';
 // import { slotRoutes } from './modules/slot/slot.routes';
 // import { bookingRoutes } from './modules/booking/booking.routes';
-// import globalErrorHandler from './middlewares/globalErrorHandler';
-// import notFound from './middlewares/notFound';
+import globalErrorHandler from './middlewares/globalErrorHandler';
+import notFound from './middlewares/notFound';
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use(cors());
 // app.use('/api/bookings', bookingRoutes);
 
 // Error handling
-// app.use(globalErrorHandler);
-// app.use(notFound);
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;
