@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-// import { userRoutes } from './modules/user/user.routes';
+import { userRoutes } from './modules/user/user.routes';
 // import { roomRoutes } from './modules/room/room.routes';
 // import { slotRoutes } from './modules/slot/slot.routes';
 // import { bookingRoutes } from './modules/booking/booking.routes';
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // Feature Routes
-// app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 // app.use('/api/rooms', roomRoutes);
 // app.use('/api/slots', slotRoutes);
 // app.use('/api/bookings', bookingRoutes);
