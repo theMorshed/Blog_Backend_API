@@ -5,7 +5,7 @@ import { loginSchema, registerUserSchema } from './user.validation';
 
 const router = Router();
 
-// Route for user signup
+// Route for user register
 router.post('/register', validateRequest(registerUserSchema), register);
 
 // Route for user login
