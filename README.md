@@ -85,7 +85,7 @@ Once the server is running, you can access the application API at:
 http://localhost:5000
 ```
 
-# API Documentation
+## API Documentation
 
 ## API Endpoints
 
@@ -375,5 +375,27 @@ In this example:
   "statusCode": 200
 }
 ```
+
+## Development & Contribution
+
+-   Fork the repository to your own GitHub account.
+-   Clone your fork to your local machine.
+-   Create a new branch for your changes.
+-   Make your changes and commit them.
+-   Push your changes and create a pull request.
+
+We welcome contributions and improvements! If you have suggestions, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+-   Special thanks to [MongoDB](https://www.mongodb.com/) for providing the database solution.
+-   Thank you to the developers of the libraries and tools used in this project:
+    -   [Express](https://expressjs.com/) - Web framework for Node.js
+    -   [Mongoose](https://mongoosejs.com/) - MongoDB object modeling tool
+    -   [Node.js](https://nodejs.org/en/) - JavaScript runtime
 
 * * *
