@@ -16,6 +16,11 @@ app.use('/api/auth', userRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Root route that sends a simple "Hello, World!" message
+app.get('/', (req, res) => {
+    res.send('Blog Backend API project run successfully');
+})
+
 // Error handling
 app.use(globalErrorHandler);
 app.use(notFound);
