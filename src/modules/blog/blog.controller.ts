@@ -3,14 +3,16 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { createBlogService, deleteBlogService, updateBlogService } from "./blog.service";
 import User from "../user/user.model";
+import Blog from "./blog.model";
+import AppError from "../../errors/AppError";
 
 export const createBlog = catchAsync(async (req, res) => {
     // Extract the authenticated user's ID as the author
     const author = req.user.id;
+    const user = await User.findById(author);
 
     // Pass the blog data and author to the service
     const blog = await createBlogService({ ...req.body, author });
-    const user = await User.findById(author);
 
     const result = {
         _id: blog._id,
@@ -36,10 +38,15 @@ export const updateBlog = catchAsync(async (req, res) => {
     const id = req.params.id;
     // Extract the authenticated user's ID as the author
     const author = req.user.id;
+    const user = await User.findById(author);
+
+    const blogExists = await Blog.findOne({_id: id, author: user});
+    if (!blogExists) {
+        throw new AppError(StatusCodes.NOT_FOUND, 'This blog does not exists or You are not the author of this blog!!');
+    }
 
     // Pass the blog data and author to the service
     const blog = await updateBlogService(id, req.body);
-    const user = await User.findById(author);
 
     const result = {
         _id: blog?._id,
@@ -62,6 +69,13 @@ export const updateBlog = catchAsync(async (req, res) => {
 
 export const deleteBlog = catchAsync(async (req, res) => {
     const id = req.params.id;
+    const author = req.user.id;
+    const user = await User.findById(author);
+
+    const blogExists = await Blog.findOne({_id: id, author: user});
+    if (!blogExists) {
+        throw new AppError(StatusCodes.NOT_FOUND, 'Blog does not exists or You can not delete this blog as you are not the author of this blog!!');
+    }
 
     // Pass the blog data and author to the service
     const blog = await deleteBlogService(id);

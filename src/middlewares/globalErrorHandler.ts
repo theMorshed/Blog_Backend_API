@@ -12,7 +12,7 @@ import AppError from "../errors/AppError";
 import { TErrorSources } from "../interface/error";
 
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-    let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    let statusCode = StatusCodes.BAD_REQUEST;
     let message = 'Something went wrong';
 
     let errorSources: TErrorSources = [
