@@ -50,18 +50,18 @@ class QueryBuilder<T> {
         return this;
     }
 
-
     /**
-     * Applies filters to the query by removing unwanted fields.
-     * The fields `searchTerm`, `sort`, `limit`, `page`, and `fields` are excluded from the filter query.
-     * 
-     * @returns {QueryBuilder<T>} - Returns the updated QueryBuilder instance with filters applied.
+     * Filters the query by the author ID if the `filter` query parameter is present.
+     * It assumes that the filter value will be an `authorId` in the format `authorId=<authorId>`.
+     *
+     * @returns {QueryBuilder<T>} - Returns the updated QueryBuilder instance with the author filter applied.
      */
     filter() {
-        const queryObj = {...this.query}; // Copies the query object to avoid mutation
-        const excludeFields = ['search', 'sortBy', 'sortOrder', 'limit', 'page', 'fields']; // Fields to exclude from filtering
-        excludeFields.forEach(el => delete queryObj[el]); // Removes excluded fields from the query
-        this.modelQuery = this.modelQuery.find(queryObj); // Applies the filter to the model query
+        const filter = this?.query?.filter as string; // Get the filter parameter from the query
+        if (filter) {
+            // Assumes the filter is the author ID, so we filter by `author` field
+            this.modelQuery = this.modelQuery.find({ author: filter });
+        }
 
         return this;
     }
