@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { createBlogService, deleteBlogService, updateBlogService } from "./blog.service";
+import { createBlogService, deleteBlogService, getAllBlogsService, updateBlogService } from "./blog.service";
 import User from "../user/user.model";
 import Blog from "./blog.model";
 import AppError from "../../errors/AppError";
@@ -31,6 +31,18 @@ export const createBlog = catchAsync(async (req, res) => {
         statusCode: StatusCodes.CREATED,
         message: 'Blog created successfully',
         data: result
+    })
+});
+
+
+export const getAllBlogs = catchAsync(async (req, res) => {
+    const blogs = await getAllBlogsService(req.query);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: 'Blogs fetched successfully',
+        data: blogs
     })
 });
 
