@@ -26,21 +26,9 @@ export default {
   // Database connection URL.
   database_url: process.env.DATABASE_URL,
 
-  // Default password used across the application.
-//   default_password: process.env.DEFAULT_PASSWORD,
-
   // Bcrypt salt rounds for secure password hashing.
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
 
   // Secret key for signing JWT access tokens.
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,
-
-  // Secret key for signing JWT refresh tokens.
-//   jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
-
-  // expires time for JWT access tokens.
-//   jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
-
-  // expires time for JWT refresh tokens.
-//   jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN
 };
