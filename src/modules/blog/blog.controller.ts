@@ -92,7 +92,7 @@ export const updateBlog = catchAsync(async (req, res) => {
 
     const blogExists = await Blog.findOne({_id: id, author: user});
     if (!blogExists) {
-        throw new AppError(StatusCodes.NOT_FOUND, 'This blog does not exist or You are not the author of this blog!!');
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not the author of this blog!!');
     }
 
     const blog = await updateBlogService(id, req.body);
@@ -134,10 +134,10 @@ export const deleteBlog = catchAsync(async (req, res) => {
 
     const blogExists = await Blog.findOne({_id: id, author: user});
     if (!blogExists) {
-        throw new AppError(StatusCodes.NOT_FOUND, 'Blog does not exist or You cannot delete this blog as you are not the author of this blog!!');
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'You cannot delete this blog as you are not the author of this blog!!');
     }
 
-    const blog = await deleteBlogService(id);
+    await deleteBlogService(id);
 
     sendResponse(res, {
         success: true,

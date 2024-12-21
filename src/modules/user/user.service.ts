@@ -7,6 +7,8 @@
  * - `bcryptjs`: For hashing and comparing passwords.
  * - `jsonwebtoken`: For generating and verifying JWT tokens.
  */
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../errors/AppError";
 import User from "./user.model";
 import { TUser } from "./user.types";
 import bcrypt from 'bcryptjs';
@@ -21,14 +23,14 @@ import jwt from 'jsonwebtoken';
  * 
  * @param payload - The user data containing `name`, `email`, `password`, etc.
  * @returns The newly created user object.
- * @throws Error if the user already exists.
+ * @throws AppError if the user already exists.
  */
 export const registerService = async (payload: TUser) => {
     const { email } = payload;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        throw new Error('User already exists');
+        throw new AppError(StatusCodes.BAD_REQUEST, 'User already exists');
     }
 
     const result = await User.create(payload);
@@ -51,13 +53,13 @@ export const loginService = async (email: string, password: string) => {
     // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
-        throw new Error('Invalid email or password');
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
     }
 
     // Compare the password with the stored hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new Error('Wrong password input');
+        throw new AppError(StatusCodes.BAD_REQUEST, 'Wrong password input');
     }
 
     // Generate a JWT token
