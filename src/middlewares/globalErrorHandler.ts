@@ -9,20 +9,6 @@ import handleDuplicateError from "../errors/handleDuplicateError";
 import AppError from "../errors/AppError";
 import { TErrorSources } from "../interface/error";
 
-// Custom error class for Authentication Error
-class AuthError extends AppError {
-    constructor(message: string) {
-        super(StatusCodes.UNAUTHORIZED, message);
-    }
-}
-
-// Custom error class for Authorization Error
-class AuthzError extends AppError {
-    constructor(message: string) {
-        super(StatusCodes.FORBIDDEN, message);
-    }
-}
-
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     let statusCode = StatusCodes.BAD_REQUEST;
     let message = 'Something went wrong';
@@ -33,30 +19,7 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         }
     ];
 
-    // Handle Authentication error (Unauthorized)
-    if (err instanceof AuthError) {
-        statusCode = StatusCodes.UNAUTHORIZED;
-        message = err.message;
-        errorSources = [
-            {
-                path: '',
-                message: 'Authentication failed. Please provide valid credentials.'
-            }
-        ];
-    }
-    // Handle Authorization error (Forbidden)
-    else if (err instanceof AuthzError) {
-        statusCode = StatusCodes.FORBIDDEN;
-        message = err.message;
-        errorSources = [
-            {
-                path: '',
-                message: 'You are not authorized to perform this action.'
-            }
-        ];
-    }
-    // Handle Zod validation error
-    else if (err instanceof ZodError) {
+    if (err instanceof ZodError) {
         const simplifiedError = handleZodError(err);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
@@ -101,9 +64,14 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         errorSources = [
             {
                 path: '',
-                message: err?.message
+                message: err?.message || 'An unexpected error occurred.'
             }
         ];
+    }
+
+    // Log unexpected errors in development or production
+    if (statusCode === StatusCodes.INTERNAL_SERVER_ERROR && config.NODE_ENV === "development") {
+        console.error("Unhandled Error:", err);
     }
 
     // Return the error response

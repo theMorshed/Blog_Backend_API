@@ -4,7 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from "../config";
 import AppError from "../errors/AppError";
-import User from "../modules/user/user.model";
 
 const auth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -17,6 +16,9 @@ const auth = (...requiredRoles: string[]) => {
 
         // Extract the token by removing the "Bearer " prefix
         const token = authHeader.split(' ')[1];
+        if (!token) {
+            throw new AppError(StatusCodes.UNAUTHORIZED, "Authentication failed. Invalid credentials.");
+        }
 
         // Verify the token
         const decoded = jwt.verify(token, config.jwt_access_secret!) as JwtPayload;
@@ -24,12 +26,11 @@ const auth = (...requiredRoles: string[]) => {
         // Check the user's role
         const role = decoded.role;
         if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
-            throw new AppError(StatusCodes.FORBIDDEN, 'You are not allowed to perform this action');
+            throw new AppError(StatusCodes.FORBIDDEN, 'You are not authorized to access this resource.');
         }
 
         // Attach the decoded user information to the request object
         req.user = decoded;
-
         next();
     })
 }
