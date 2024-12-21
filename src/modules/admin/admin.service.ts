@@ -21,14 +21,22 @@ import User from "../user/user.model";
  * @throws AppError - If the user is already blocked, throws a BAD_REQUEST error.
  */
 export const blockUserService = async (id: string) => {
-    const blockedUser = await User.findById(id);
-    const blocked = blockedUser?.isBlocked;
-    if (blocked) {
+    const user = await User.findById(id);
+
+    // Check if user is already blocked
+    const isBlocked = user?.isBlocked;
+    if (isBlocked) {
         throw new AppError(StatusCodes.BAD_REQUEST, 'User already blocked!');
     }
 
-    const user = await User.findByIdAndUpdate(id, { isBlocked: true });
-    return user;
+    // Check if user is admin
+    const role = user?.role;
+    if (role === 'admin') {
+        throw new AppError(StatusCodes.BAD_REQUEST, 'You can not block an admin');
+    }
+
+    const blockUser = await User.findByIdAndUpdate(id, { isBlocked: true });
+    return blockUser;
 }
 
 /**
