@@ -8,7 +8,7 @@ export const createBlogService = async(payload: TBlog) => {
 }
 
 export const getAllBlogsService = async(query: Record<string, unknown>) => {
-    const blogQuery = new QueryBuilder(Blog.find(), query)
+    const blogQuery = new QueryBuilder(Blog.find().populate('author', 'name email'), query)
     .search(['title', 'content'])
     .sort()
     .filter();

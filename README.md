@@ -60,12 +60,18 @@ npm install
 Create a .env file in the root directory of the project, and set the following environment variables:
 
 ```bash
+NODE_ENV=development
 PORT=5000
 DATABASE_URL=mongodb://localhost:27017/bikestore(you will get this api from mongodb atlas)
+BCRYPT_SALT_ROUNDS=12
+JWT_ACCESS_SECRET=fdkjfeiwoiejwrerewrwer(sample)
 ```
 
+-   **NODE_ENV:** – set it development
 -   **PORT:** – The port on which the server will run.
 -   **DATABASE_URL:** – Your MongoDB connection URL (can be a local MongoDB instance or a MongoDB Atlas connection string).
+-   **BCRYPT_SALT_ROUNDS:** – Use 10, 11, 12 any of this number.
+-   **JWT_ACCESS_SECRET:** – Give here a 32 bytes or 64 bytes random string for making your password secure.
 
 ### 4. Run the Application
 
